@@ -44,30 +44,20 @@ module.exports = async (client, guild) => {
     });
 
     if (guild.name == undefined) return;
-
-    const promises = [
-        client.shard.broadcastEval(client => client.guilds.cache.size),
-        client.shard.broadcastEval(client => client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)),
-    ];
-    Promise.all(promises)
-        .then(async (results) => {
-            const totalGuilds = results[0].reduce((acc, guildCount) => acc + guildCount, 0);
-
-            const embed = new discord.MessageEmbed()
-                .setTitle("🔴・Removed from a server!")
-                .addField("Total servers:", `${totalGuilds}`, true)
-                .addField("Server name", `${guild.name}`, true)
-                .addField("Server ID", `${guild.id}`, true)
-                .addField("Server members", `${guild.memberCount}`, true)
-                .addField("Server owner", `<@!${guild.ownerId}> (${guild.ownerId})`, true)
-                .setThumbnail("https://cdn.discordapp.com/attachments/843487478881976381/852419424895631370/BotSadEmote.png")
-                .setColor(client.config.colors.normal)
-            kickLogs.send({
-                username: 'Bot Logs',
-                avatarURL: client.user.avatarURL(),
-                embeds: [embed],
-            });
-        })
+    
+  const embed = new discord.MessageEmbed()    
+    .setTitle("🔴・Removed from a server!")    
+    .addField("Total servers:", `${client.guilds.cache.size}`, true)    
+    .addField("Server name", `${guild.name}`, true)   
+    .addField("Server ID", `${guild.id}`, true)    
+    .addField("Server members", `${guild.memberCount}`, true)    
+    .addField("Server owner", `<@!${guild.ownerId}> (${guild.ownerId})`, true) .setThumbnail("https://cdn.discordapp.com/attachments/843487478881976381/852419424895631370/BotSadEmote.png")        
+    .setColor(client.config.colors.normal)  
+  kickLogs.send({
+    username: 'Bot Logs',
+    avatarURL: client.user.avatarURL(),
+    embeds: [embed],  
+  });
 
             var remove = await Schema.deleteMany({ Guild: guild.id });
             var remove = await Schema3.deleteMany({ Guild: guild.id });

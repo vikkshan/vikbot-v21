@@ -16,28 +16,20 @@ module.exports = async (client, guild) => {
     }).save();
 
     try {
-        const promises = [
-            client.shard.broadcastEval(client => client.guilds.cache.size),
-            client.shard.broadcastEval(client => client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)),
-        ];
-        Promise.all(promises)
-            .then(async (results) => {
-                const totalGuilds = results[0].reduce((acc, guildCount) => acc + guildCount, 0);
-                const embed = new Discord.MessageEmbed()
-                    .setTitle("🟢・Added to a new server!")
-                    .addField("Total servers:", `${totalGuilds}`, true)
-                    .addField("Server name", `${guild.name}`, true)
-                    .addField("Server ID", `${guild.id}`, true)
-                    .addField("Server members", `${guild.memberCount}`, true)
-                    .addField("Server owner", `<@!${guild.ownerId}> (${guild.ownerId})`, true)
-                    .setThumbnail("https://cdn.discordapp.com/attachments/843487478881976381/852419422392156210/BotPartyEmote.png")
-                    .setColor(client.config.colors.normal)
+      const embed = new Discord.MessageEmbed()
+        .setTitle("🟢・Added to a new server!")
+        .addField("Total servers:", `${client.guilds.cache.size}`, true)
+        .addField("Server name", `${guild.name}`, true)
+        .addField("Server ID", `${guild.id}`, true)
+        .addField("Server members", `${guild.memberCount}`, true)        
+        .addField("Server owner", `<@!${guild.ownerId}> (${guild.ownerId})`, true)
+.setThumbnail("https://cdn.discordapp.com/attachments/843487478881976381/852419422392156210/BotPartyEmote.png")
+        .setColor(client.config.colors.normal)
                 webhookClient.send({
                     username: 'Bot Logs',
                     avatarURL: client.user.avatarURL(),
                     embeds: [embed],
                 });
-            })
 
         let defaultChannel = "";
         guild.channels.cache.forEach((channel) => {
@@ -76,7 +68,7 @@ module.exports = async (client, guild) => {
             },
             {
                 name: "☎️┆I need help what now?",
-                value: `You can DM <@534398298002292739> for support or joining the [[Support server]](${client.config.discord.serverInvite})`,
+                value: `You can DM <@784649693363306518> for support or joining the [[Support server]](${client.config.discord.serverInvite})`,
                 inline: false,
             },
             {
